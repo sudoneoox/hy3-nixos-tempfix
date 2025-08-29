@@ -10,7 +10,7 @@
 #include <hyprland/src/desktop/DesktopTypes.hpp>
 #include <hyprland/src/desktop/Workspace.hpp>
 #include <hyprland/src/helpers/Color.hpp>
-#include <hyprland/src/managers/AnimationManager.hpp>
+#include <hyprland/src/managers/animation/AnimationManager.hpp>
 #include <hyprland/src/managers/input/InputManager.hpp>
 #include <hyprland/src/render/OpenGL.hpp>
 #include <hyprland/src/render/Texture.hpp>
@@ -360,7 +360,7 @@ void Hy3TabBarEntry::renderText(float scale, CBox& box, float opacity) {
 	glBlendFunc(GL_CONSTANT_COLOR, GL_ONE_MINUS_SRC_ALPHA);
 	glBlendColor(c.r, c.g, c.b, c.a);
 
-	g_pHyprOpenGL->renderTexture(this->texture, texture_box, { .a = opacity });
+	g_pHyprOpenGL->renderTexture(this->texture, texture_box, {.a = opacity});
 
 	glBlendColor(1, 1, 1, 1);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -756,9 +756,8 @@ void Hy3TabGroup::renderTabBar() {
 			if (!valid(windowref)) continue;
 			auto window = windowref.lock();
 
-			auto wpos =
-			    window->m_realPosition->value() - monitor->m_position
-			    + (window->m_workspace ? window->m_workspace->m_renderOffset->value() : Vector2D());
+			auto wpos = window->m_realPosition->value() - monitor->m_position
+			          + (window->m_workspace ? window->m_workspace->m_renderOffset->value() : Vector2D());
 
 			auto wsize = window->m_realSize->value();
 
@@ -767,7 +766,7 @@ void Hy3TabGroup::renderTabBar() {
 			window_box.scale(scale);
 
 			if (window_box.width > 0 && window_box.height > 0)
-				g_pHyprOpenGL->renderRect(window_box, CHyprColor(0, 0, 0, 0), { .round = *window_rounding });
+				g_pHyprOpenGL->renderRect(window_box, CHyprColor(0, 0, 0, 0), {.round = *window_rounding});
 		}
 
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
